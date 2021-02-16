@@ -47,7 +47,7 @@ dependencies {
     compile "io.netty:netty-transport-native-epoll:$nettyEpollVersion:linux-x86_64"
 
     // Audio Player
-    compile group: 'com.github.WearifulCupid0', name: 'lavaplayer', version: lavaplayerVersion
+    compile group: 'com.github.RockieBot.lavaplayer', name: 'lavaplayer', version: lavaplayerVersion
     compile group: 'com.sedmelluq', name: 'lavaplayer-ext-youtube-rotator', version: lavaplayerIpRotatorVersion
 
     // Filters

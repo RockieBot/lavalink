@@ -67,7 +67,9 @@ public class AudioLoaderRestHandler {
 
     playlist.put("name", result.playlistName);
     playlist.put("creator", result.playlistCreator);
+    playlist.put("image", result.playlistImage);
     playlist.put("type", result.playlistType);
+    playlist.put("size", result.playlistName != null ? tracks.length() : null);
     playlist.put("selectedTrack", result.selectedTrack);
 
     json.put("playlistInfo", playlist);

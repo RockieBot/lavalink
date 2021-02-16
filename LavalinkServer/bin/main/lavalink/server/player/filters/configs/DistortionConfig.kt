@@ -22,6 +22,9 @@ class DistortionConfig(
       .setCosScale(cosScale)
   }
 
+  private val offsets = listOf(sinOffset, tanOffset, cosOffset)
+  private val scales = listOf(cosScale, sinScale, tanScale)
+
   override fun isEnabled(): Boolean
     = true // offsets.any { it != 0.0f } || scales.any { it != 1f }
 }

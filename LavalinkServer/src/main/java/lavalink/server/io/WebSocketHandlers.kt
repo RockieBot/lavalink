@@ -97,11 +97,6 @@ class WebSocketHandlers(private val contextMap: Map<String, SocketContext>) {
   }
 
   fun equalizer(context: SocketContext, json: JSONObject) {
-    if (!loggedEqualizerDeprecationWarning) log.warn("The 'equalizer' op has been deprecated in favour of the " +
-      "'filters' op. Please switch to use that one, as this op will get removed in v4.")
-
-    loggedEqualizerDeprecationWarning = true
-
     val player = context.getPlayer(json.getString("guildId"))
     val list = mutableListOf<Band>()
     json.getJSONArray("bands").forEach { b ->

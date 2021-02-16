@@ -17,6 +17,7 @@ public class AudioSourcesConfig {
   private boolean vimeo = true;
   private boolean clyp = true;
   private boolean loom = true;
+  private boolean jamendo = true;
   private boolean http = true;
   private boolean local = false;
 
@@ -74,6 +75,14 @@ public class AudioSourcesConfig {
 
   public void setLoom(boolean loom) {
     this.loom = loom;
+  }
+
+  public boolean isJamendo() {
+    return jamendo;
+  }
+
+  public void setJamendo(boolean jamendo) {
+    this.jamendo = jamendo;
   }
 
   public boolean isHttp() {

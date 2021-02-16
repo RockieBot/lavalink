@@ -6,11 +6,13 @@ import com.sedmelluq.discord.lavaplayer.source.bandcamp.BandcampAudioSourceManag
 import com.sedmelluq.discord.lavaplayer.source.http.HttpAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.local.LocalAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.clyp.ClypAudioSourceManager
+import com.sedmelluq.discord.lavaplayer.source.jamendo.JamendoAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.loom.LoomAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.soundcloud.*
 import com.sedmelluq.discord.lavaplayer.source.twitch.TwitchStreamAudioSourceManager
 import com.sedmelluq.discord.lavaplayer.source.vimeo.VimeoAudioSourceManager
-import com.sedmelluq.discord.lavaplayer.source.youtube.YoutubeAudioSourceManager
+import com.sedmelluq.discord.lavaplayer.source.youtube.*
+import com.sedmelluq.discord.lavaplayer.source.youtube.music.*
 import com.sedmelluq.discord.lavaplayer.track.playback.NonAllocatingAudioFrameBuffer
 import com.sedmelluq.lava.extensions.youtuberotator.YoutubeIpRotatorSetup
 import com.sedmelluq.lava.extensions.youtuberotator.planner.*
@@ -43,7 +45,18 @@ class AudioPlayerConfiguration {
     }
 
     if (sources.isYoutube) {
-      val youtube = YoutubeAudioSourceManager(lavaplayerProps.isYoutubeSearchEnabled)
+      val youtube = YoutubeAudioSourceManager(
+        lavaplayerProps.isYoutubeSearchEnabled,
+        DefaultYoutubeTrackDetailsLoader(),
+        YoutubeSearchProvider(),
+        DefaultYoutubeMusicSearchLoader(),
+        DefaultYoutubeMusicAlbumLoader(),
+        YoutubeSignatureCipherManager(),
+        DefaultYoutubePlaylistLoader(),
+        DefaultYoutubeSimilarLoader(),
+        DefaultYoutubeLinkRouter(),
+        YoutubeMixProvider()
+        )
       if (routePlanner != null) {
         val retryLimit = lavaplayerProps.ratelimit?.retryLimit ?: -1
         when {
@@ -52,11 +65,6 @@ class AudioPlayerConfiguration {
             .setup()
           else -> YoutubeIpRotatorSetup(routePlanner).forSource(youtube).withRetryLimit(retryLimit).setup()
         }
-      }
-
-      val playlistLoadLimit = lavaplayerProps.youtubePlaylistLoadLimit
-      if (playlistLoadLimit != null) {
-        youtube.setPlaylistPageCount(playlistLoadLimit)
       }
 
       audioPlayerManager.registerSourceManager(youtube)
@@ -83,6 +91,7 @@ class AudioPlayerConfiguration {
     if (sources.isVimeo) audioPlayerManager.registerSourceManager(VimeoAudioSourceManager())
     if (sources.isClyp) audioPlayerManager.registerSourceManager(ClypAudioSourceManager())
     if (sources.isLoom) audioPlayerManager.registerSourceManager(LoomAudioSourceManager())
+    if (sources.isJamendo && lavaplayerProps.jamendoClientId != null) audioPlayerManager.registerSourceManager(JamendoAudioSourceManager(lavaplayerProps.isJamendoSearchEnabled, lavaplayerProps.jamendoClientId))
     if (sources.isHttp) audioPlayerManager.registerSourceManager(HttpAudioSourceManager())
     if (sources.isLocal) audioPlayerManager.registerSourceManager(LocalAudioSourceManager())
 

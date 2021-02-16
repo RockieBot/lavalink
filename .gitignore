@@ -13,3 +13,4 @@ build/*
 .settings
 /Testbot/build/
 /Testbot/out/
+.vscode
